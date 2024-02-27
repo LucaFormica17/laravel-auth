@@ -5,4 +5,14 @@
     <h3 class="text-center mt-5">Descrizione:</h3>
     <p class="text-center">{{$project->description}}</p>
     <p class="text-end me-5 mt-4">Data di consegna: {{$project->end_date}}</p>
+
+    <a href="{{route('admin.projects.edit', $project->id)}}" class="ms-5">
+        <button class="btn btn-sm btn-primary">Modifica</button>
+    </a>
+
+        <form action="{{route('admin.projects.destroy', $project->id)}}" method="post" onsubmit="return confirm('Sicuro di volere cancellare questo progetto?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger ms-5">Elimina</button>
+        </form>
 @endsection

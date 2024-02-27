@@ -6,6 +6,11 @@
         {{ __('Dashboard') }}
     </h2>
     <div class="row justify-content-center">
+        <div class="col-12">
+            <a href="{{route('admin.projects.create')}}">
+                <button class="btn btn-sm btn-primary">Nuovo+</button>
+            </a>
+        </div>
         <div class="col-12 text-center">
             <h1>I miei progetti</h1>
             <table class="table table-striped">

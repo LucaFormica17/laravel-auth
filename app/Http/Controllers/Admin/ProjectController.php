@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
 
+use Illuminate\Support\Facades\Validator;
+
+use App\Http\Requests\ProjectUpdateRequest;
+use App\Http\Requests\ProjectStoreRequest;
+
 class ProjectController extends Controller
 {
     /**
@@ -26,7 +31,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -35,9 +40,17 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProjectStoreRequest $request)
     {
-        //
+        $data = $request->all();
+
+        $new_project = new Project();
+
+        $new_project->fill($data);
+        
+        $new_project->save();
+
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -60,7 +73,8 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $project = Project::findOrFail($id);
+        return view('edit', compact('project'));
     }
 
     /**
@@ -70,9 +84,15 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProjectUpdateRequest $request, Project $project)
     {
-        //
+        $data = $request->all();
+
+        $project->update($data);
+
+        $project->save();
+
+        return redirect()->route('admin.projects.show', $project->id);
     }
 
     /**
@@ -81,8 +101,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->route('admin.projects.index');
     }
 }
