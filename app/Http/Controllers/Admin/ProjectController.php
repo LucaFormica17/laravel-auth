@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Http\Requests\ProjectStoreRequest;
@@ -42,9 +43,16 @@ class ProjectController extends Controller
      */
     public function store(ProjectStoreRequest $request)
     {
+
         $data = $request->all();
 
         $new_project = new Project();
+
+        if ($request->hasFile('project_image')) {
+            $img_path = Storage::disk('public')->put('projects_image', $data['project_image']);
+            $data['project_image'] = $img_path;
+        }
+
 
         $new_project->fill($data);
         
@@ -89,6 +97,14 @@ class ProjectController extends Controller
         $data = $request->all();
 
         $project->update($data);
+
+        if ($request->hasFile('project_image')) {
+            if ($project->project_image != null) {
+                Storage::disk('public')->delete($project->project_image);
+            }
+            $img_path = Storage::disk('public')->put('projects_image', $data['project_image']);
+            $data['project_image'] = $img_path;
+        }
 
         $project->save();
 

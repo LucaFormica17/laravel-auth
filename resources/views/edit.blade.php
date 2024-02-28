@@ -19,6 +19,14 @@
                                 {{$message}}
                             </div>
                             @enderror
+                            @if ($project->project_image != null)
+                                <img src="{{asset('/storage/'.$project->project_image)}}" alt="{{$project->title}}" width="150">
+                            @endif
+                            <label for="project_image"></label>
+                            <input type="file" name="project_image" id="project_image" @error('project_image') is-invalid @enderror>
+                            @error('project_image')
+                                <div class="alert alert-danger">{{$message}}</div>
+                            @enderror
                             <label for="descriprion">Descrizione</label>
                             <textarea name="description" id="description" cols="30" rows="10" class="form-control mb-3">{{$project->description}}</textarea>
                             @error('description')

@@ -9,7 +9,7 @@
                         <h2 class="text-center">Nuovo progetto</h2>
                     </div>
                     <div class="card-body">
-                        <form action="{{route('admin.projects.store')}}" method="post" class="form-control">
+                        <form action="{{route('admin.projects.store')}}" method="post" class="form-control" enctype="multipart/form-data">
                             @csrf
                             <label for="title">Titolo</label>
                             <input type="text" class="form-control mb-3" name="title" id="title">
@@ -17,6 +17,11 @@
                             <div class="alert alert-danger">
                                 {{$message}}
                             </div>
+                            @enderror
+                            <label for="project_image"></label>
+                            <input type="file" name="project_image" id="project_image" @error('project_image') is-invalid @enderror>
+                            @error('project_image')
+                                <div class="alert alert-danger">{{$message}}</div>
                             @enderror
                             <label for="descriprion">Descrizione</label>
                             <textarea name="description" id="description" cols="30" rows="10" class="form-control mb-3"></textarea>
